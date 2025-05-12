@@ -1,0 +1,48 @@
+# Archivos de Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Archivos generados por compilación
+bin/
+obj/
+out/
+
+# Archivos de paquetes NuGet
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+*.nuspec
+
+# Archivos de configuración de Rider
+.idea/
+
+# Archivos de configuración de Visual Studio Code
+.vscode/
+
+# Archivos temporales del sistema
+*.log
+*.tmp
+*.temp
+*.DS_Store
+Thumbs.db
+
+# Archivos de lock y backup
+project.lock.json
+project.fragment.lock.json
+
+# Archivos del sistema operativo
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# Archivos de entorno de desarrollo
+*.swp
+*.bak
+*.orig
+
+# GitFlow metadata (por si usas AVH GitFlow)
+.gitflow/
