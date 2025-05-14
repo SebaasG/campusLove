@@ -1,3 +1,5 @@
+using campusLove.domain.ports;
+using campusLove.infrastructure.repositories;
 using MySql.Data.MySqlClient;
 using sgi_app.domain.factory;
 
@@ -12,6 +14,11 @@ namespace sgi_app.infrastructure.mysql
         {
             _connectionString = connectionString;
             ObtenerConexion();
+        }
+
+        public IRegisterRepository ResgisterUserRepository()
+        {
+            return new registerRepository(ConexionSingleton.Instancia(_connectionString));
         }
 
     
