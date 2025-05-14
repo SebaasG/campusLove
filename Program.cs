@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using campusLove.application.services;
+using campusLove.application.ui;
+using Microsoft.Extensions.Configuration;
 using sgi_app.domain.factory;
 using sgi_app.infrastructure.mysql;
 
@@ -27,6 +29,11 @@ namespace CslApp
             Console.WriteLine(connectionString);
 
             IDbFactory factory = new mysqlDbFactory(connectionString);
+
+            var resgiterService =  new RegisterUser(factory.ResgisterUserRepository());
+
+            var uiMenu = new Menu(resgiterService);
+            uiMenu.ShowMenu();
 
         }
     }
