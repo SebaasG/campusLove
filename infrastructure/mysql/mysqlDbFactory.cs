@@ -21,6 +21,11 @@ namespace sgi_app.infrastructure.mysql
             return new registerRepository(ConexionSingleton.Instancia(_connectionString));
         }
 
+        public ILoginRepository LoginUserRepository()
+        {
+            return new LoginRepository(ConexionSingleton.Instancia(_connectionString));
+        }
+
     
         public MySqlConnection ObtenerConexion()
         {

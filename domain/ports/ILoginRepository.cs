@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace campusLove.domain.ports
 {
-    public class ILoginRepository
+    public interface ILoginRepository
     {
-        
+        bool login (string username, string password);
     }
 }
