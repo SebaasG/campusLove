@@ -37,7 +37,6 @@ namespace campusLove.infrastructure.repositories
                 command.Parameters.AddWithValue("@_UserName", user.username);
                 command.Parameters.AddWithValue("@_Password", passwordHashed);
 
-                connec.Open();
                 command.ExecuteNonQuery();
             }
         }
