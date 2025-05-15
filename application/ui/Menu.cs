@@ -5,17 +5,22 @@ using System.Threading.Tasks;
 using campusLove.application.services;
 using campusLove.domain.dto;
 using campusLove.domain.ports;
+using MySqlX.XDevAPI.Common;
 
 namespace campusLove.application.ui
 {
     public class Menu
     {
         private readonly RegisterUser _service;
-        public Menu(RegisterUser service)
+        private readonly LoginUI _login;
+
+        public Menu(RegisterUser service, LoginUI login)
         {
+            _login = login;
             _service = service;
         }
 
+     
         public void ShowMenu()
         {
 
@@ -31,11 +36,15 @@ namespace campusLove.application.ui
                     case "1":
 
                         register();
-                        Console.WriteLine("Registration functionality is not implemented yet.");
                         break;
                     case "2":
-                        // Call the login method
-                        Console.WriteLine("Login functionality is not implemented yet.");
+                        var Result = _login.login();
+                        if(Result == true){
+                            Console.WriteLine("Login successful!");
+                        }
+                        else{
+                            Console.WriteLine("Login failed. Please try again.");
+                        }
                         break;
                     case "3":
                         exit = true;

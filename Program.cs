@@ -31,8 +31,9 @@ namespace CslApp
             IDbFactory factory = new mysqlDbFactory(connectionString);
 
             var resgiterService =  new RegisterUser(factory.ResgisterUserRepository());
-
-            var uiMenu = new Menu(resgiterService);
+            var loginService = new LoginService(factory.LoginUserRepository());
+    
+            var uiMenu = new Menu(resgiterService, new LoginUI(loginService));
             uiMenu.ShowMenu();
 
         }
