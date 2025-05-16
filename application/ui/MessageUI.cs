@@ -32,17 +32,22 @@ namespace campusLove.application.ui
         //         Console.WriteLine($"{msg.fromUser}: {msg.content} ({msg.createdAt})");
         //     }
         // }
-        public void allChats(string userName, string toUser)
-        {
-            Console.Clear();
-            Console.WriteLine("===================================");
-            Console.WriteLine("           ChatsLove            ");
-            Console.WriteLine("===================================");
-            Console.WriteLine(_messageService.GetConversation(userName, toUser));
-            Console.WriteLine("===================================");
+public void allChats(string userName, string toUser)
+{
+    Console.Clear();
+    Console.WriteLine("===================================");
+    Console.WriteLine("           ChatsLove            ");
+    Console.WriteLine("===================================");
 
-            // Aquí puedes agregar la lógica para mostrar los chats disponibles
-        }
+    var conversation = _messageService.GetConversation(userName, toUser);
+    foreach (var msg in conversation)
+    {
+        Console.WriteLine($"{msg.fromUser}: {msg.content} ({msg.createdAt})");
+    }
+
+    Console.WriteLine("===================================");
+}
+
         
     }
 }
