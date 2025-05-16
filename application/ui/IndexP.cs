@@ -1,12 +1,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using campusLove.application.services;
+using campusLove.domain.entities;
 
 namespace campusLove.application.ui
 {
     public class IndexP
     {
+
+        private readonly MessageUI _messageUI;
+
+        public IndexP(MessageUI messageUI)
+        {
+            this._messageUI = messageUI;
+        }
         public void Show(string userName)
         {
             Console.Clear();
@@ -33,7 +43,6 @@ namespace campusLove.application.ui
                     // Call method to view matches
                     break;
                 case "3":
-                    // Call method to view messages
                     break;
                 case "4":
                     // Call method to view settings
@@ -48,6 +57,13 @@ namespace campusLove.application.ui
                     Console.WriteLine("Invalid option. Please try again.");
                     break;
             }
+
+
+        }
+
+        public void Show()
+        {
+            
         }
     }
 }
