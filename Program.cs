@@ -17,7 +17,7 @@ namespace CslApp
                 .Build();
 
             var dbSettings = configuration.GetSection("DatabaseSettings");
-            
+
             var server = dbSettings["Server"];
             var port = dbSettings["Port"];
             var database = dbSettings["Database"];
@@ -30,10 +30,13 @@ namespace CslApp
 
             IDbFactory factory = new mysqlDbFactory(connectionString);
 
-            var resgiterService =  new RegisterUser(factory.ResgisterUserRepository());
+            var resgiterService = new RegisterUser(factory.ResgisterUserRepository());
             var loginService = new LoginService(factory.LoginUserRepository());
-    
-            var uiMenu = new Menu(resgiterService, new LoginUI(loginService));
+            var indexP = new IndexP();
+            var uiMenu = new Menu(resgiterService, new LoginUI(loginService), indexP);
+            uiMenu.ShowMenu();
+
+
             uiMenu.ShowMenu();
 
         }
