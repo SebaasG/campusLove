@@ -16,19 +16,19 @@ namespace campusLove.infrastructure.repositories
             _conn = conn;
         }
 
-        public void saveMessage(Messages messages)
-        {
-            var connec = _conn.ObtenerConexion();
-            var query = "INSERT INTO Messages (fromUser, toUser, content) VALUES (@from, @to, @content)";
-            using (var command = new MySqlCommand(query, connec))
-            {
-                command.Parameters.AddWithValue("@from", messages.fromUser);
-                command.Parameters.AddWithValue("@to", messages.toUser);
-                command.Parameters.AddWithValue("@content", messages.content);
+        // public void saveMessage(Messages messages)
+        // {
+        //     var connec = _conn.ObtenerConexion();
+        //     var query = "INSERT INTO Messages (fromUser, toUser, content) VALUES (@from, @to, @content)";
+        //     using (var command = new MySqlCommand(query, connec))
+        //     {
+        //         command.Parameters.AddWithValue("@from", messages.fromUser);
+        //         command.Parameters.AddWithValue("@to", messages.toUser);
+        //         command.Parameters.AddWithValue("@content", messages.content);
 
-                command.ExecuteNonQuery();
-            }
-        }
+        //         command.ExecuteNonQuery();
+        //     }
+        // }
 
         public List<Messages> getConversation(string user1, string user2)
         {

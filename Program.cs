@@ -32,7 +32,8 @@ namespace CslApp
 
             var resgiterService = new RegisterUser(factory.ResgisterUserRepository());
             var loginService = new LoginService(factory.LoginUserRepository());
-            var indexP = new IndexP();
+            var messageService = new MessageService(factory.MessagesRepository());
+            var indexP = new IndexP(new MessageUI(messageService) );
             var uiMenu = new Menu(resgiterService, new LoginUI(loginService), indexP);
             uiMenu.ShowMenu();
 

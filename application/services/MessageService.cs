@@ -16,16 +16,16 @@ namespace campusLove.application.services
         this.messageRepo = messageRepo;
     }
 
-    public void SendMessage(string from, string to, string content)
-    {
-        var message = new Messages
-        {
-            fromUser = from,
-            toUser = to,
-            content = content
-        };
-        messageRepo.saveMessage(message);
-    }
+    // public void SendMessage(string from, string to, string content)
+    // {
+    //     var message = new Messages
+    //     {
+    //         fromUser = from,
+    //         toUser = to,
+    //         content = content
+    //     };
+    //     messageRepo.saveMessage(message);
+    // }
 
     public List<Messages> GetConversation(string user1, string user2)
     {

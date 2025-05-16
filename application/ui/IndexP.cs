@@ -7,6 +7,12 @@ namespace campusLove.application.ui
 {
     public class IndexP
     {
+
+        private readonly MessageUI _messagesUI;
+        public IndexP( MessageUI message)
+        {
+            _messagesUI = message;
+        }
         public void Show(string userName)
         {
             Console.Clear();
@@ -33,7 +39,7 @@ namespace campusLove.application.ui
                     // Call method to view matches
                     break;
                 case "3":
-                    // Call method to view messages
+                    chats();
                     break;
                 case "4":
                     // Call method to view settings
@@ -43,6 +49,32 @@ namespace campusLove.application.ui
                     break;
                 case "6":
                     Environment.Exit(0);
+                    break;
+                default:
+                    Console.WriteLine("Invalid option. Please try again.");
+                    break;
+            }
+        }
+
+
+
+        public void chats()
+        {
+            Console.Clear();
+            Console.WriteLine("===================================");
+            Console.WriteLine("           ChatsLove            ");
+            Console.WriteLine("===================================");
+            Console.WriteLine("1. Exit");
+            Console.WriteLine("===================================");
+
+            var option = Console.ReadLine();
+
+            switch (option)
+            {
+                case "1":
+                Console.WriteLine("Entra aqui");
+                    _messagesUI.allChats("1052382113", "1234567890");
+                    Console.ReadLine();
                     break;
                 default:
                     Console.WriteLine("Invalid option. Please try again.");
