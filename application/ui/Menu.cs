@@ -13,14 +13,17 @@ namespace campusLove.application.ui
     {
         private readonly RegisterUser _service;
         private readonly LoginUI _login;
+        private readonly IndexP _indexP;
 
-        public Menu(RegisterUser service, LoginUI login)
+        public Menu(RegisterUser service, LoginUI login, IndexP indexP)
         {
-            _login = login;
             _service = service;
+            _login = login;
+            _indexP = indexP;
         }
 
-     
+
+
         public void ShowMenu()
         {
 
@@ -39,10 +42,13 @@ namespace campusLove.application.ui
                         break;
                     case "2":
                         var Result = _login.login();
-                        if(Result == true){
+                        if (Result == true)
+                        {
                             Console.WriteLine("Login successful!");
+                            _indexP.Show();
                         }
-                        else{
+                        else
+                        {
                             Console.WriteLine("Login failed. Please try again.");
                         }
                         break;
@@ -54,7 +60,7 @@ namespace campusLove.application.ui
                         break;
                 }
             }
-        
+
         }
 
         public void DisplayMainMenu()
@@ -70,15 +76,16 @@ namespace campusLove.application.ui
             Console.Write("Please select an option: ");
         }
 
-        private void register(){
+        private void register()
+        {
 
-            var user  = new DtoRegisterUser();
+            var user = new DtoRegisterUser();
             Console.Clear();
             Console.WriteLine("===================================");
             Console.WriteLine("          Register User           ");
             Console.WriteLine("===================================");
 
-            user.doc = PedirEntrada("Enter your doc: "); 
+            user.doc = PedirEntrada("Enter your doc: ");
             user.name = PedirEntrada("Enter your name: ");
             user.lastName = PedirEntrada("Enter your last name: ");
             user.age = PedirEntradaInt("Enter your age: ");
@@ -87,8 +94,8 @@ namespace campusLove.application.ui
             user.careerId = PedirEntradaInt("Enter your career ID: ");
             user.username = PedirEntrada("Enter your username: ");
             user.password = PedirEntrada("Enter your password: ");
-          
-         
+
+
 
             // Call the register method from the service
             _service.registerUser(user);
@@ -98,7 +105,7 @@ namespace campusLove.application.ui
             Console.ReadKey();
         }
 
-         private string PedirEntrada(string mensaje)
+        private string PedirEntrada(string mensaje)
         {
             Console.Write(mensaje);
             return Console.ReadLine();
