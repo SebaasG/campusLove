@@ -7,6 +7,6 @@ namespace campusLove.domain.ports
 {
     public interface ILoginRepository
     {
-        bool login (string username, string password);
+        string login (string username, string password);
     }
 }
