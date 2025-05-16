@@ -22,7 +22,7 @@ namespace campusLove.application.ui
             _indexP = indexP;
         }
 
-
+        public string Result  = "";
 
         public void ShowMenu()
         {
@@ -41,11 +41,11 @@ namespace campusLove.application.ui
                         register();
                         break;
                     case "2":
-                        var Result = _login.login();
-                        if (Result == true)
+                        Result = _login.login();
+                        if (Result != "404")
                         {
                             Console.WriteLine("Login successful!");
-                            _indexP.Show();
+                            _indexP.Show(Result);
                         }
                         else
                         {

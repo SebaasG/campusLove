@@ -13,7 +13,7 @@ namespace campusLove.application.services
         {
             _repo = repo;
         }
-        public bool login(string username, string password)
+        public string login(string username, string password)
         {
             return _repo.login(username, password);
         }

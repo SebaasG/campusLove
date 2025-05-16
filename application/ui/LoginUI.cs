@@ -15,7 +15,8 @@ namespace campusLove.application.ui
             _service = loginService;
         }
 
-        public bool login(){
+        public string login(){
+            string Username = "";
 
             var credentials  = new Credentials();
             Console.Clear();
@@ -27,9 +28,8 @@ namespace campusLove.application.ui
             credentials.password = PedirEntrada("Enter your Password: ");
     
             var result = _service.login(credentials.username, credentials.password);
+            Console.WriteLine("Este es el resultado: " + result);
             return result;
-            Console.WriteLine("Press any key to return to the main menu...");
-            Console.ReadKey();
 
         }
 
