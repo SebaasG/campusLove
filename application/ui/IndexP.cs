@@ -2,11 +2,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using campusLove.application.services;
+using campusLove.domain.ports;
+using sgi_app.infrastructure.mysql;
 
 namespace campusLove.application.ui
 {
     public class IndexP
-    {
+    {   
+        private readonly ProfileUI _profileui;
+
+        public IndexP(ProfileUI profileui)
+        {
+            _profileui = profileui;
+        }
+
+
         public void Show(string userName)
         {
             Console.Clear();
@@ -27,7 +38,8 @@ namespace campusLove.application.ui
             switch (option)
             {
                 case "1":
-                    // Call method to view profiles
+                    ProfileView(userName);
+
                     break;
                 case "2":
                     // Call method to view matches
@@ -48,6 +60,13 @@ namespace campusLove.application.ui
                     Console.WriteLine("Invalid option. Please try again.");
                     break;
             }
+
+        }
+
+        public void ProfileView(string userName)
+        {
+            Console.WriteLine("HOla MUNDO");
+            _profileui.ViewProfiles(userName);
         }
     }
 }
