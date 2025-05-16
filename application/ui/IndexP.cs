@@ -7,9 +7,10 @@ namespace campusLove.application.ui
 {
     public class IndexP
     {
-        public void Show()
+        public void Show(string userName)
         {
             Console.Clear();
+            Console.WriteLine("userName: " + userName);
             Console.WriteLine("===================================");
             Console.WriteLine("           Campus Love            ");
             Console.WriteLine("===================================");
