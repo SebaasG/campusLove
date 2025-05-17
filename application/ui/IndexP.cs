@@ -67,7 +67,7 @@ namespace campusLove.application.ui
                 }
 
             }
-
+        }
         public void ProfileView(string userName)
         {
             Console.WriteLine("HOla MUNDO");
