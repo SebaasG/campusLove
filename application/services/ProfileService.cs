@@ -9,7 +9,7 @@ namespace campusLove.application.services
 {
     public class ProfileService
     {
-         private readonly IProfileRepository _repository;
+        private readonly IProfileRepository _repository;
 
         public ProfileService(IProfileRepository repository)
         {
@@ -21,19 +21,24 @@ namespace campusLove.application.services
             return _repository.GetNextProfile(currentUserDoc);
         }
 
-        // public void LikeProfile(string fromUser, string toUser)
-        // {
-        //     _repository.RegisterInteraction(fromUser, toUser, 1); // 1 = Like
+        public void LikeProfile(string fromUser, string toUser)
+        {
+            _repository.RegisterInteraction(fromUser, toUser, 1); // 1 = Like
 
-        //     if (_repository.CheckIfMatchExists(toUser, fromUser))
-        //     {
-        //         _repository.CreateMatch(fromUser, toUser);
-        //     }
-        // }
+            if (_repository.CheckIfMatchExists(toUser, fromUser))
+            {
+                _repository.CreateMatch(fromUser, toUser);
+            }
+        }
 
-        // public void DislikeProfile(string fromUser, string toUser)
-        // {
-        //     _repository.RegisterInteraction(fromUser, toUser, 2); // 2 = Dislike
-        // }
+        public void DislikeProfile(string fromUser, string toUser)
+        {
+            _repository.RegisterInteraction(fromUser, toUser, 2); // 2 = Dislike
+        }
+        public string  FindDoc(String username)
+        {
+            return  _repository.GetDocByUsername(username);
+        }
+
     }
 }

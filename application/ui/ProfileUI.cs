@@ -15,10 +15,21 @@ namespace campusLove.application.ui
             _service = service;
         }
 
-        public void ViewProfiles(string currentUserDoc)
+        public void ViewProfiles(string currentUsername)
         {
+            
+             String currentUserDoc = _service.FindDoc(currentUsername);
+
+            if (string.IsNullOrEmpty(currentUserDoc))
+            {
+                Console.WriteLine("Error: No se encontró el documento del usuario.");
+                return;
+            } 
+
             while (true)
             {
+
+
                 var profile = _service.GetNextProfile(currentUserDoc);
 
                 if (profile == null)
@@ -28,6 +39,7 @@ namespace campusLove.application.ui
                 }
 
                 Console.Clear();
+                Console.WriteLine("username: " + currentUserDoc);
                 Console.WriteLine("===================================");
                 Console.WriteLine($"Name: {profile.name}, Age: {profile.age}");
                 Console.WriteLine($"Gender: {profile.gender}, City: {profile.city}");
@@ -36,7 +48,17 @@ namespace campusLove.application.ui
                 Console.WriteLine("1. Like");
                 Console.WriteLine("2. Dislike");
                 Console.WriteLine("3. Exit");
+
+                var option = Console.ReadLine();
+
+                if (option == "1")
+                    _service.LikeProfile(currentUserDoc, profile.doc);
+                else if (option == "2")
+                    _service.DislikeProfile(currentUserDoc, profile.doc);
+                else
+                    break;
             }
+
         }
     }
 }
