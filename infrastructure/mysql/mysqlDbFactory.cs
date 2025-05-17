@@ -20,6 +20,10 @@ namespace sgi_app.infrastructure.mysql
         {
             return new registerRepository(ConexionSingleton.Instancia(_connectionString));
         }
+        public IMessagesRepository MessagesRepository()
+        {
+            return new MessageRepository(ConexionSingleton.Instancia(_connectionString));
+        }
 
         public ILoginRepository LoginUserRepository()
         {

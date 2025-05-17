@@ -16,34 +16,67 @@ namespace campusLove.infrastructure.repositories
             _conn = conn;
         }
 
-        public void saveMessage(Messages messages)
+        // Método auxiliar para obtener el doc (documento) de un usuario por su username
+        private string GetDocByUsername(string username, MySqlConnection connec)
+        {
+            string doc = null;
+            string sql = "SELECT docUser FROM Credentials WHERE username = @username LIMIT 1";
+            using var cmd = new MySqlCommand(sql, connec);
+            cmd.Parameters.AddWithValue("@username", username);
+
+            using var reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                doc = reader.GetString("docUser");
+            }
+            reader.Close();
+            return doc;
+        }
+
+        public void saveMessage(Messages message)
         {
             var connec = _conn.ObtenerConexion();
-            var query = "INSERT INTO Messages (fromUser, toUser, content) VALUES (@from, @to, @content)";
+
+            // Obtener los documentos para fromUser y toUser a partir de sus usernames
+            var fromDoc = GetDocByUsername(message.fromUser, connec);
+            var toDoc = GetDocByUsername(message.toUser, connec);
+
+            if (fromDoc == null || toDoc == null)
+            {
+                throw new Exception("Usuario no encontrado para fromUser o toUser");
+            }
+
+            var query = "INSERT INTO Messages (fromUser, toUser, content, createdAt) VALUES (@from, @to, @content, @createdAt)";
             using (var command = new MySqlCommand(query, connec))
             {
-                command.Parameters.AddWithValue("@from", messages.fromUser);
-                command.Parameters.AddWithValue("@to", messages.toUser);
-                command.Parameters.AddWithValue("@content", messages.content);
+                command.Parameters.AddWithValue("@from", fromDoc);
+                command.Parameters.AddWithValue("@to", toDoc);
+                command.Parameters.AddWithValue("@content", message.content);
+                command.Parameters.AddWithValue("@createdAt", message.createdAt);
 
                 command.ExecuteNonQuery();
             }
         }
 
-        public List<Messages> getConversation(string user1, string user2)
+        public List<Messages> getConversation(string username1, string username2)
         {
             var messages = new List<Messages>();
             var connec = _conn.ObtenerConexion();
 
             string sql = @"
-                SELECT * FROM Messages
-                WHERE (fromUser = @user1 AND toUser = @user2)
-                   OR (fromUser = @user2 AND toUser = @user1)
-                ORDER BY createdAt";
+                SELECT m.id, m.fromUser, m.toUser, m.content, m.createdAt
+                FROM Messages m
+                JOIN Credentials c1 ON m.fromUser = c1.docUser
+                JOIN Credentials c2 ON m.toUser = c2.docUser
+                WHERE 
+                    (c1.username = @user1 AND c2.username = @user2)
+                    OR 
+                    (c1.username = @user2 AND c2.username = @user1)
+                ORDER BY m.createdAt";
 
             using var cmd = new MySqlCommand(sql, connec);
-            cmd.Parameters.AddWithValue("@user1", user1);
-            cmd.Parameters.AddWithValue("@user2", user2);
+            cmd.Parameters.AddWithValue("@user1", username1);
+            cmd.Parameters.AddWithValue("@user2", username2);
 
             using var reader = cmd.ExecuteReader();
             while (reader.Read())
@@ -59,6 +92,34 @@ namespace campusLove.infrastructure.repositories
             }
 
             return messages;
+        }
+
+        public List<string> getChatUsers(string username)
+        {
+            var users = new HashSet<string>(); // Evita duplicados
+            var connec = _conn.ObtenerConexion();
+
+            string sql = @"
+                SELECT DISTINCT 
+                    CASE 
+                        WHEN c1.username = @username THEN c2.username
+                        ELSE c1.username
+                    END AS otherUser
+                FROM Messages m
+                JOIN Credentials c1 ON m.fromUser = c1.docUser
+                JOIN Credentials c2 ON m.toUser = c2.docUser
+                WHERE c1.username = @username OR c2.username = @username";
+
+            using var cmd = new MySqlCommand(sql, connec);
+            cmd.Parameters.AddWithValue("@username", username);
+
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                users.Add(reader.GetString("otherUser"));
+            }
+
+            return new List<string>(users);
         }
     }
 }
