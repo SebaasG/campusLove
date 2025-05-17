@@ -2,52 +2,76 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using campusLove.application.services;
+using campusLove.domain.ports;
+using sgi_app.infrastructure.mysql;
+using campusLove.application.ui;
 
 namespace campusLove.application.ui
 {
     public class IndexP
     {
+            private readonly MessageUI _messagesUI;
+            private readonly ProfileUI _profileui;
+
+        public IndexP(MessageUI messageUI, ProfileUI profileui)
+        {
+            _messagesUI = messageUI;
+            _profileui = profileui;
+        }
         public void Show(string userName)
         {
-            Console.Clear();
-            Console.WriteLine("userName: " + userName);
-            Console.WriteLine("===================================");
-            Console.WriteLine("           Campus Love            ");
-            Console.WriteLine("===================================");
-            Console.WriteLine("1. View Profiles");
-            Console.WriteLine("2. Matches");
-            Console.WriteLine("3. Messages");
-            Console.WriteLine("4. Settings");
-            Console.WriteLine("5. Logout");
-            Console.WriteLine("6. Exit");
-            Console.WriteLine("===================================");
-
-            var option = Console.ReadLine();
-
-            switch (option)
+            while (true)
             {
-                case "1":
-                    // Call method to view profiles
-                    break;
-                case "2":
-                    // Call method to view matches
-                    break;
-                case "3":
-                    // Call method to view messages
-                    break;
-                case "4":
-                    // Call method to view settings
-                    break;
-                case "5":
-                    // Call method to logout
-                    break;
-                case "6":
-                    Environment.Exit(0);
-                    break;
-                default:
-                    Console.WriteLine("Invalid option. Please try again.");
-                    break;
+                Console.Clear();
+                Console.WriteLine("userName: " + userName);
+                Console.WriteLine("===================================");
+                Console.WriteLine("           Campus Love             ");
+                Console.WriteLine("===================================");
+                Console.WriteLine("1. View Profiles");
+                Console.WriteLine("2. Matches");
+                Console.WriteLine("3. Messages");
+                Console.WriteLine("4. Settings");
+                Console.WriteLine("5. Logout");
+                Console.WriteLine("6. Exit");
+                Console.WriteLine("===================================");
+                Console.Write("Selecciona una opción: ");
+
+                var option = Console.ReadLine();
+
+                switch (option)
+                {
+                    case "1":
+                        ProfileView(userName);
+                        break;
+                    case "2":
+                        // Call method to view matches
+                        break;
+                    case "3":
+                        _messagesUI.StartChat(userName);
+                        Console.WriteLine("Presiona una tecla para volver...");
+                        Console.ReadKey();
+                        break;
+                    case "4":
+                        // Call method to view settings
+                        break;
+                    case "5":
+                        // Call method to logout
+                        break;
+                    case "6":
+                        Environment.Exit(0);
+                        break;
+                    default:
+                        Console.WriteLine("Invalid option. Please try again.");
+                        break;
+                }
+
             }
+        }
+        public void ProfileView(string userName)
+        {
+            Console.WriteLine("HOla MUNDO");
+            _profileui.ViewProfiles(userName);
         }
     }
 }

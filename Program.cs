@@ -30,15 +30,17 @@ namespace CslApp
 
             IDbFactory factory = new mysqlDbFactory(connectionString);
 
-            var resgiterService = new RegisterUser(factory.ResgisterUserRepository());
+            var registerService = new RegisterUser(factory.ResgisterUserRepository());
             var loginService = new LoginService(factory.LoginUserRepository());
-            var indexP = new IndexP();
-            var uiMenu = new Menu(resgiterService, new LoginUI(loginService), indexP);
+            var profileService = new ProfileService(factory.ProfileRepository());
+            var messageService = new MessageService(factory.MessagesRepository());
+
+
+            var profileUI = new ProfileUI(profileService);
+            var indexP = new IndexP(new MessageUI(messageService), profileUI );
+
+            var uiMenu = new Menu(registerService, new LoginUI(loginService), indexP);
             uiMenu.ShowMenu();
-
-
-            uiMenu.ShowMenu();
-
         }
     }
 }

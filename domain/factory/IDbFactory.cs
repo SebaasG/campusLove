@@ -12,5 +12,9 @@ namespace sgi_app.domain.factory
         IRegisterRepository ResgisterUserRepository();
         ILoginRepository LoginUserRepository();
 
+        IMessagesRepository MessagesRepository();
+
+        IProfileRepository  ProfileRepository();
+
     }
 }
