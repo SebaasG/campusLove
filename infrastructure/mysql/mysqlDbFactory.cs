@@ -6,7 +6,7 @@ using sgi_app.domain.factory;
 
 namespace sgi_app.infrastructure.mysql
 {
-    public class mysqlDbFactory : IDbFactory               
+    public class mysqlDbFactory : IDbFactory
     {
         private readonly string _connectionString;
 
@@ -26,10 +26,15 @@ namespace sgi_app.infrastructure.mysql
             return new LoginRepository(ConexionSingleton.Instancia(_connectionString));
         }
 
-    
+
         public MySqlConnection ObtenerConexion()
         {
             return ConexionSingleton.Instancia(_connectionString).ObtenerConexion();
+        }
+
+        public IProfileRepository ProfileRepository()
+        {
+            return new ProfileRepository(ConexionSingleton.Instancia(_connectionString));
         }
     }
 }

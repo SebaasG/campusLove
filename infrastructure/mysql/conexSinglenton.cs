@@ -42,6 +42,7 @@ namespace sgi_app.infrastructure.mysql
                 _conexion.Open();
             }
 
+
             return _conexion;
         }
 
