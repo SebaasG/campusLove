@@ -1,84 +1,66 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using campusLove.application.ui;
 
 namespace campusLove.application.ui
 {
     public class IndexP
     {
-
         private readonly MessageUI _messagesUI;
-        public IndexP( MessageUI message)
+
+        public IndexP(MessageUI messageUI)
         {
-            _messagesUI = message;
+            _messagesUI = messageUI;
         }
+
         public void Show(string userName)
         {
-            Console.Clear();
-            Console.WriteLine("userName: " + userName);
-            Console.WriteLine("===================================");
-            Console.WriteLine("           Campus Love            ");
-            Console.WriteLine("===================================");
-            Console.WriteLine("1. View Profiles");
-            Console.WriteLine("2. Matches");
-            Console.WriteLine("3. Messages");
-            Console.WriteLine("4. Settings");
-            Console.WriteLine("5. Logout");
-            Console.WriteLine("6. Exit");
-            Console.WriteLine("===================================");
-
-            var option = Console.ReadLine();
-
-            switch (option)
+            while (true)
             {
-                case "1":
-                    // Call method to view profiles
-                    break;
-                case "2":
-                    // Call method to view matches
-                    break;
-                case "3":
-                    chats();
-                    break;
-                case "4":
-                    // Call method to view settings
-                    break;
-                case "5":
-                    // Call method to logout
-                    break;
-                case "6":
-                    Environment.Exit(0);
-                    break;
-                default:
-                    Console.WriteLine("Invalid option. Please try again.");
-                    break;
-            }
-        }
+                Console.Clear();
+                Console.WriteLine("userName: " + userName);
+                Console.WriteLine("===================================");
+                Console.WriteLine("           Campus Love             ");
+                Console.WriteLine("===================================");
+                Console.WriteLine("1. View Profiles");
+                Console.WriteLine("2. Matches");
+                Console.WriteLine("3. Messages");
+                Console.WriteLine("4. Settings");
+                Console.WriteLine("5. Logout");
+                Console.WriteLine("6. Exit");
+                Console.WriteLine("===================================");
+                Console.Write("Selecciona una opción: ");
 
+                var option = Console.ReadLine();
 
-
-        public void chats()
-        {
-            Console.Clear();
-            Console.WriteLine("===================================");
-            Console.WriteLine("           ChatsLove            ");
-            Console.WriteLine("===================================");
-            Console.WriteLine("1. Exit");
-            Console.WriteLine("===================================");
-
-            var option = Console.ReadLine();
-
-            switch (option)
-            {
-                case "1":
-                Console.WriteLine("Entra aqui");
-                    _messagesUI.allChats("1052382113", "1234567890");
-                    Console.ReadLine();
-                    break;
-                default:
-                    Console.WriteLine("Invalid option. Please try again.");
-                    break;
+                switch (option)
+                {
+                    case "1":
+                        // TODO: View profiles
+                        break;
+                    case "2":
+                        // TODO: View matches
+                        break;
+                    case "3":
+                        // Aquí simplemente llamamos al StartChat, que ya muestra todo el flujo de chats
+                        _messagesUI.StartChat(userName);
+                        Console.WriteLine("Presiona una tecla para volver...");
+                        Console.ReadKey();
+                        break;
+                    case "4":
+                        // TODO: Settings
+                        break;
+                    case "5":
+                        Console.WriteLine("Cerrando sesión...");
+                        return; // Regresa al menú de login
+                    case "6":
+                        Environment.Exit(0);
+                        break;
+                    default:
+                        Console.WriteLine("Opción inválida. Presiona una tecla para continuar...");
+                        Console.ReadKey();
+                        break;
+                }
             }
         }
     }

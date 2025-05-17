@@ -1,53 +1,88 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using campusLove.application.services;
 
 namespace campusLove.application.ui
 {
     public class MessageUI
     {
-
         private readonly MessageService _messageService;
+
         public MessageUI(MessageService messageService)
         {
             _messageService = messageService;
         }
-        //         public void StartChat(MessageService chatService, string currentUser)
-        // {
-        //     Console.Write("¿Con quién quieres hablar? (Doc): ");
-        //     string toUser = Console.ReadLine();
 
-        //     Console.WriteLine("Escribe tu mensaje:");
-        //     string message = Console.ReadLine();
+        public void StartChat(string currentUser)
+        {
+            Console.Clear();
+            Console.WriteLine("===================================");
+            Console.WriteLine("           ChatsLove               ");
+            Console.WriteLine("===================================");
 
-        //     // chatService.SendMessage(currentUser, toUser, message);
-        //     // Console.WriteLine("Mensaje enviado!");
+            var chatUsers = _messageService.GetChatsForUser(currentUser);
 
-        //     Console.WriteLine("\nConversación:");
-        //     var conversation = chatService.GetConversation(currentUser, toUser);
-        //     foreach (var msg in conversation)
-        //     {
-        //         Console.WriteLine($"{msg.fromUser}: {msg.content} ({msg.createdAt})");
-        //     }
-        // }
-public void allChats(string userName, string toUser)
-{
-    Console.Clear();
-    Console.WriteLine("===================================");
-    Console.WriteLine("           ChatsLove            ");
-    Console.WriteLine("===================================");
+            if (chatUsers.Count == 0)
+            {
+                Console.WriteLine("Aún no tienes conversaciones.");
+            }
+            else
+            {
+                Console.WriteLine("Conversaciones previas:");
+                for (int i = 0; i < chatUsers.Count; i++)
+                {
+                    Console.WriteLine($"{i + 1}. {chatUsers[i]}");
+                }
+            }
 
-    var conversation = _messageService.GetConversation(userName, toUser);
-    foreach (var msg in conversation)
-    {
-        Console.WriteLine($"{msg.fromUser}: {msg.content} ({msg.createdAt})");
-    }
+            Console.WriteLine("\n¿Con quién quieres hablar?");
+            Console.Write("Escribe el número o el nombre de usuario: ");
+            string input = Console.ReadLine();
+            string toUser;
 
-    Console.WriteLine("===================================");
-}
+            if (int.TryParse(input, out int selectedIndex) && selectedIndex > 0 && selectedIndex <= chatUsers.Count)
+            {
+                toUser = chatUsers[selectedIndex - 1];
+            }
+            else
+            {
+                toUser = input;
+            }
 
-        
+            ShowConversation(currentUser, toUser);
+            SendMessagePrompt(currentUser, toUser);
+        }
+
+        private void ShowConversation(string userName, string toUser)
+        {
+            Console.Clear();
+            Console.WriteLine("===================================");
+            Console.WriteLine($"Chat entre {userName} y {toUser}");
+            Console.WriteLine("===================================");
+
+            var conversation = _messageService.GetConversation(userName, toUser);
+            foreach (var msg in conversation)
+            {
+                Console.WriteLine($"{msg.fromUser}: {msg.content} ({msg.createdAt})");
+            }
+
+            Console.WriteLine("===================================");
+        }
+
+        private void SendMessagePrompt(string fromUser, string toUser)
+        {
+            Console.WriteLine("\nEscribe tu mensaje (o deja vacío para salir):");
+            string message = Console.ReadLine();
+
+            if (!string.IsNullOrWhiteSpace(message))
+            {
+                _messageService.SendMessage(fromUser, toUser, message);
+                Console.WriteLine("Mensaje enviado.");
+            }
+            else
+            {
+                Console.WriteLine("No se envió ningún mensaje.");
+            }
+        }
     }
 }
