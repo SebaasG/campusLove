@@ -22,14 +22,11 @@ namespace campusLove.application.services
         }
 
         public void LikeProfile(string fromUser, string toUser)
-        {
-            _repository.RegisterInteraction(fromUser, toUser, 1); // 1 = Like
+{
+    _repository.RegisterInteraction(fromUser, toUser, 1); // 1 = Like
+    // Ya no se necesita verificar ni crear el match aquí: el trigger lo hace automáticamente.
+}
 
-            if (_repository.CheckIfMatchExists(toUser, fromUser))
-            {
-                _repository.CreateMatch(fromUser, toUser);
-            }
-        }
 
         public void DislikeProfile(string fromUser, string toUser)
         {
