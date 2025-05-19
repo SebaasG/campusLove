@@ -8,7 +8,7 @@ namespace CslApp
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var basePath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", ".."));
             var configuration = new ConfigurationBuilder()
@@ -26,8 +26,20 @@ namespace CslApp
 
             var connectionString = $"Server={server};Port={port};Database={database};User={user};Password={password};";
 
-            Console.WriteLine(connectionString);
+            var smtpSection = configuration.GetSection("SmtpSettings");
 
+            var smtpSettings = new campusLove.domain.dto.SmtpSettings
+            {
+                Server = smtpSection["Server"],
+                Port = int.Parse(smtpSection["Port"]),
+                Username = smtpSection["Username"],
+                Password = smtpSection["Password"],
+                FromName = smtpSection["FromName"]
+            };
+
+            var emailSender = new campusLove.infrastructure.helpers.EmailSend(smtpSettings);
+
+         
             IDbFactory factory = new mysqlDbFactory(connectionString);
 
             var registerService = new RegisterUser(factory.ResgisterUserRepository());
@@ -38,8 +50,8 @@ namespace CslApp
 
             var profileUI = new ProfileUI(profileService);
             var matchUI = new MatchUI(matchService);
-            
-            var indexP = new IndexP(new MessageUI(messageService), profileUI , matchUI);
+
+            var indexP = new IndexP(new MessageUI(messageService), profileUI, matchUI);
 
             var uiMenu = new Menu(registerService, new LoginUI(loginService), indexP);
             uiMenu.ShowMenu();
