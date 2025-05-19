@@ -94,6 +94,7 @@ namespace campusLove.application.ui
             user.careerId = PedirEntradaInt("Enter your career ID: ");
             user.username = PedirEntrada("Enter your username: ");
             user.password = PedirEntrada("Enter your password: ");
+            user.Phrase = PedirEntrada("Enter your phrase: ");
 
 
 

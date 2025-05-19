@@ -19,5 +19,8 @@ namespace campusLove.domain.dto
         //Atributos de credenciales
         public string username { get; set; }
         public string password { get; set; }
+
+
+         public string Phrase { get; set; }
     }
 }
