@@ -67,35 +67,66 @@ namespace campusLove.domain.ports
         }
 
         // Ya no necesitas esto para crear matches, solo como utilidad opcional:
-            public bool CheckIfMatchExists(string fromUser, string toUser)
-            {
-                var con = _conn.ObtenerConexion();
-                string query = @"SELECT 1 FROM Matches 
+        public bool CheckIfMatchExists(string fromUser, string toUser)
+        {
+            var con = _conn.ObtenerConexion();
+            string query = @"SELECT 1 FROM Matches 
                                     WHERE (user1 = @from AND user2 = @to) 
                                     OR (user1 = @to AND user2 = @from)";
-                using var cmd = new MySqlCommand(query, con);
-                cmd.Parameters.AddWithValue("@from", fromUser);
-                cmd.Parameters.AddWithValue("@to", toUser);
-                using var reader = cmd.ExecuteReader();
-                return reader.Read();
+            using var cmd = new MySqlCommand(query, con);
+            cmd.Parameters.AddWithValue("@from", fromUser);
+            cmd.Parameters.AddWithValue("@to", toUser);
+            using var reader = cmd.ExecuteReader();
+            return reader.Read();
+        }
+
+
+
+
+        public string GetDocByUsername(string username)
+        {
+            var connec = _conn.ObtenerConexion();
+            var query = "SELECT docUser FROM Credentials WHERE username = @username LIMIT 1";
+
+            using (var command = new MySqlCommand(query, connec))
+            {
+                command.Parameters.AddWithValue("@username", username);
+                var result = command.ExecuteScalar();
+                return result?.ToString();
             }
+        }
 
+        public int GetCreditsByDoc(string doc)
+        {
+            var connec = _conn.ObtenerConexion();
+            var query = "SELECT dailyCredits FROM Credits WHERE userId = @doc LIMIT 1";
 
-       
-    
- public string GetDocByUsername(string username)
-{
-    var connec = _conn.ObtenerConexion();
-    var query = "SELECT docUser FROM Credentials WHERE username = @username LIMIT 1";
+            using (var command = new MySqlCommand(query, connec))
+            {
+                command.Parameters.AddWithValue("@doc", doc);
+                var result = command.ExecuteScalar();
 
-    using (var command = new MySqlCommand(query, connec))
-    {
-        command.Parameters.AddWithValue("@username", username);
-        var result = command.ExecuteScalar();
-        return result?.ToString();
-    }
-}
+                if (result == null || result == DBNull.Value)
+                {
+                    return 0; // No tiene créditos registrados
+                }
 
+                return Convert.ToInt32(result);
+            }
+        }
+        
+        public void UpdateCredits(string doc, int newCredits)
+        {
+            var connec = _conn.ObtenerConexion();
+            var query = "UPDATE Credits SET dailyCredits = @newCredits WHERE userId = @doc";
+
+            using (var command = new MySqlCommand(query, connec))
+            {
+                command.Parameters.AddWithValue("@newCredits", newCredits);
+                command.Parameters.AddWithValue("@doc", doc);
+                command.ExecuteNonQuery();
+            }
+        }
 
     }
 }

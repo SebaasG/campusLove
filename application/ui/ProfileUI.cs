@@ -37,6 +37,7 @@ namespace campusLove.application.ui
                     Console.WriteLine("No more profiles to view.");
                     break;
                 }
+                 var credits = _service.GetCredits(currentUserDoc);
 
                 Console.Clear();
                 Console.WriteLine("username: " + currentUserDoc);
@@ -45,18 +46,39 @@ namespace campusLove.application.ui
                 Console.WriteLine($"Gender: {profile.gender}, City: {profile.city}");
                 Console.WriteLine($"Phrase: {profile.phrase}");
                 Console.WriteLine("===================================");
+                Console.WriteLine($"Tienes {credits} créditos.");
                 Console.WriteLine("1. Like");
                 Console.WriteLine("2. Dislike");
                 Console.WriteLine("3. Exit");
 
                 var option = Console.ReadLine();
-
-                if (option == "1")
-                    _service.LikeProfile(currentUserDoc, profile.doc);
-                else if (option == "2")
-                    _service.DislikeProfile(currentUserDoc, profile.doc);
-                else
+                
+                 
+    
+                if (credits <= 0)
+                {
+                    Console.WriteLine("No tienes créditos suficientes para interactuar.");
                     break;
+                }
+                else if (credits > 0)
+                {
+                    if (option == "1")
+                    {
+                        _service.LikeProfile(currentUserDoc, profile.doc);
+                        _service.UpdateCredits(currentUserDoc, credits - 1);
+                    }
+                    else if (option == "2")
+                    {
+                        _service.DislikeProfile(currentUserDoc, profile.doc);
+                        _service.UpdateCredits(currentUserDoc, credits - 1);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+    
             }
 
         }
