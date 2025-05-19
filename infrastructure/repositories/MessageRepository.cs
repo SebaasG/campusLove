@@ -16,7 +16,6 @@ namespace campusLove.infrastructure.repositories
             _conn = conn;
         }
 
-        // Método auxiliar para obtener el doc (documento) de un usuario por su username
         private string GetDocByUsername(string username, MySqlConnection connec)
         {
             string doc = null;
@@ -37,7 +36,6 @@ namespace campusLove.infrastructure.repositories
         {
             var connec = _conn.ObtenerConexion();
 
-            // Obtener los documentos para fromUser y toUser a partir de sus usernames
             var fromDoc = GetDocByUsername(message.fromUser, connec);
             var toDoc = GetDocByUsername(message.toUser, connec);
 
@@ -100,15 +98,23 @@ namespace campusLove.infrastructure.repositories
             var connec = _conn.ObtenerConexion();
 
             string sql = @"
-                SELECT DISTINCT 
-                    CASE 
-                        WHEN c1.username = @username THEN c2.username
-                        ELSE c1.username
-                    END AS otherUser
-                FROM Messages m
-                JOIN Credentials c1 ON m.fromUser = c1.docUser
-                JOIN Credentials c2 ON m.toUser = c2.docUser
-                WHERE c1.username = @username OR c2.username = @username";
+        SELECT 
+            uMatch.username AS matchedUsername
+        FROM
+            Credentials AS c
+        JOIN Matches AS m
+            ON c.docUser = m.user1 OR c.docUser = m.user2
+        JOIN Users AS u
+            ON u.doc = c.docUser
+        JOIN Credentials AS uMatch
+            ON (
+                (m.user1 = uMatch.docUser AND m.user2 = c.docUser)
+                OR
+                (m.user2 = uMatch.docUser AND m.user1 = c.docUser)
+            )
+        WHERE 
+            c.username = @username
+            AND uMatch.username != @username;";
 
             using var cmd = new MySqlCommand(sql, connec);
             cmd.Parameters.AddWithValue("@username", username);
@@ -116,10 +122,12 @@ namespace campusLove.infrastructure.repositories
             using var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                users.Add(reader.GetString("otherUser"));
+                users.Add(reader.GetString("matchedUsername"));
             }
 
             return new List<string>(users);
         }
+
     }
+
 }

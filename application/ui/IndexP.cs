@@ -13,6 +13,7 @@ namespace campusLove.application.ui
     {
             private readonly MessageUI _messagesUI;
             private readonly ProfileUI _profileui;
+            
 
         public IndexP(MessageUI messageUI, ProfileUI profileui)
         {
@@ -31,8 +32,8 @@ namespace campusLove.application.ui
                 Console.WriteLine("1. View Profiles");
                 Console.WriteLine("2. Matches");
                 Console.WriteLine("3. Messages");
-                Console.WriteLine("4. Settings");
-                Console.WriteLine("5. Logout");
+                Console.WriteLine("4. Your Profile");
+                Console.WriteLine("5. Stats");
                 Console.WriteLine("6. Exit");
                 Console.WriteLine("===================================");
                 Console.Write("Selecciona una opción: ");
@@ -53,14 +54,15 @@ namespace campusLove.application.ui
                         Console.ReadKey();
                         break;
                     case "4":
-                        // Call method to view settings
+                        
                         break;
                     case "5":
-                        // Call method to logout
+                        // Call method to view settings
                         break;
                     case "6":
+                        Console.WriteLine("Saliendo...");
                         Environment.Exit(0);
-                        break;
+                        return;
                     default:
                         Console.WriteLine("Invalid option. Please try again.");
                         break;
@@ -70,7 +72,6 @@ namespace campusLove.application.ui
         }
         public void ProfileView(string userName)
         {
-            Console.WriteLine("HOla MUNDO");
             _profileui.ViewProfiles(userName);
         }
     }
