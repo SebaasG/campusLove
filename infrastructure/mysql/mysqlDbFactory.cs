@@ -40,5 +40,10 @@ namespace sgi_app.infrastructure.mysql
         {
             return new ProfileRepository(ConexionSingleton.Instancia(_connectionString));
         }
+
+        public IMatchesRepository matchesRepository()
+        {
+            return new Matchreposotory(ConexionSingleton.Instancia(_connectionString));
+        }
     }
 }

@@ -14,7 +14,9 @@ namespace sgi_app.domain.factory
 
         IMessagesRepository MessagesRepository();
 
-        IProfileRepository  ProfileRepository();
+        IProfileRepository ProfileRepository();
+        
+        IMatchesRepository matchesRepository();
 
     }
 }

@@ -21,6 +21,7 @@ namespace campusLove.domain.dto
         public string password { get; set; }
 
 
-         public string Phrase { get; set; }
+        public string Phrase { get; set; }
+        public string email { get; set; }
     }
 }
