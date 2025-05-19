@@ -35,9 +35,9 @@ namespace CslApp
             var profileService = new ProfileService(factory.ProfileRepository());
             var messageService = new MessageService(factory.MessagesRepository());
 
-
+            
             var profileUI = new ProfileUI(profileService);
-            var indexP = new IndexP(new MessageUI(messageService), profileUI );
+            var indexP = new IndexP(new MessageUI(messageService), profileUI);
 
             var uiMenu = new Menu(registerService, new LoginUI(loginService), indexP);
             uiMenu.ShowMenu();
