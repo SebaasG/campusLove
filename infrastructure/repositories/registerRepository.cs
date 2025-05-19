@@ -22,7 +22,7 @@ namespace campusLove.infrastructure.repositories
         {
             var connec = _conn.ObtenerConexion();
             
-            string query = "CALL registerUser(@_Doc, @_Name, @_LastName, @_Age, @_GenderId, @_CityId, @_CareerId, @_UserName, @_Password);";
+            string query = "CALL registerUser(@_Doc, @_Name, @_LastName, @_Age, @_GenderId, @_CityId, @_CareerId, @_UserName, @_Password, @_Phrase);";
 
             using (var command = new MySqlCommand(query, connec))
             {
@@ -36,6 +36,7 @@ namespace campusLove.infrastructure.repositories
                 command.Parameters.AddWithValue("@_CareerId", user.careerId);
                 command.Parameters.AddWithValue("@_UserName", user.username);
                 command.Parameters.AddWithValue("@_Password", passwordHashed);
+                command.Parameters.AddWithValue("@_Phrase", user.Phrase);
 
                 command.ExecuteNonQuery();
             }
