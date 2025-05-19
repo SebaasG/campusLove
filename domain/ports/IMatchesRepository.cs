@@ -8,7 +8,7 @@ namespace campusLove.domain.ports
 {
     public interface IMatchesRepository
     {
-        MacthInfo? GetMatchesForUser(string userDoc);
+        List<MacthInfo> GetMatchesForUser(string userDoc); 
         string GetDocByUsername(string username);
     }
     

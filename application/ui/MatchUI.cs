@@ -16,36 +16,39 @@ namespace campusLove.application.ui
         }
 
         public void ShowUserMatches(string userDoc)
-        {
-            String currentUserDoc = _matchService.FindDoc(userDoc);
-
-
-            if (string.IsNullOrEmpty(currentUserDoc))
-            {
-                Console.WriteLine("Error: No se encontró el documento del usuario.");
-                return;
-            } 
-            
-
-                while (true)
 {
-    var profile = _matchService.GetNextProfile(currentUserDoc);
+    string currentUserDoc = _matchService.FindDoc(userDoc);
+
+    if (string.IsNullOrEmpty(currentUserDoc))
+    {
+        Console.WriteLine("Error: No se encontró el documento del usuario.");
+        return;
+    } 
+
+    var profiles = _matchService.GetUserMatches(currentUserDoc);
 
     Console.WriteLine("\n🧡 Tus Matches:");
-    if (profile == null)
+    if (profiles == null || profiles.Count == 0)
     {
         Console.WriteLine("Aún no tienes matches. ¡Sigue interactuando!");
-        break;
+        return;
     }
 
-    Console.WriteLine($"📌 Usuario: {profile.MatchedUserName} (Doc: {profile.MatchedUserDoc})");
-    Console.WriteLine($"    ➤ Fecha del Match: {profile.CreatedAt:yyyy-MM-dd HH:mm}");
+    int index = 0;
+    while (index < profiles.Count)
+    {
+        var profile = profiles[index];
+        Console.WriteLine($"📌 Usuario: {profile.MatchedUserName} (Doc: {profile.MatchedUserDoc})");
+        Console.WriteLine($"    ➤ Fecha del Match: {profile.CreatedAt:yyyy-MM-dd HH:mm}");
 
-    Console.WriteLine("\nPresiona [Enter] para ver otro match o escribe 'salir' para terminar.");
-    var input = Console.ReadLine();
-    if (input?.ToLower() == "salir")
-        break;
+        Console.WriteLine("\nPresiona [Enter] para ver otro match o escribe 'salir' para terminar.");
+        var input = Console.ReadLine();
+        if (input?.ToLower() == "salir")
+            break;
+
+        index++;
+    }
 }
-        }
+
     }
 }

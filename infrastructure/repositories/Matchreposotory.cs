@@ -17,36 +17,37 @@ namespace campusLove.infrastructure.repositories
             _conn = coon;
         }
 
-        public MacthInfo? GetMatchesForUser(string currentUserDoc)
+       public List<MacthInfo> GetMatchesForUser(string currentUserDoc)
+{
+    var con = _conn.ObtenerConexion();
+    string query = @"
+        SELECT 
+            u.doc, u.name, m.createdAt
+        FROM Matches m
+        JOIN Users u ON 
+            (m.user1 = u.doc AND m.user2 = @userDoc) OR
+            (m.user2 = u.doc AND m.user1 = @userDoc)
+        WHERE 
+            u.doc != @userDoc";
+
+    var matches = new List<MacthInfo>();
+
+    using var cmd = new MySqlCommand(query, con);
+    cmd.Parameters.AddWithValue("@userDoc", currentUserDoc);
+    using var reader = cmd.ExecuteReader();
+
+    while (reader.Read())
+    {
+        matches.Add(new MacthInfo
         {
-            var con = _conn.ObtenerConexion();
-            string query = @"
-            SELECT 
-                u.doc, u.name, m.createdAt
-            FROM Matches m
-            JOIN Users u ON 
-                (m.user1 = u.doc AND m.user2 = @userDoc) OR
-                (m.user2 = u.doc AND m.user1 = @userDoc)
-            WHERE 
-                u.doc != @userDoc";
+            MatchedUserDoc = reader.GetString("doc"),
+            MatchedUserName = reader.GetString("name"),
+            CreatedAt = reader.GetDateTime("createdAt"),
+        });
+    }
 
-            using var cmd = new MySqlCommand(query, con);
-            cmd.Parameters.AddWithValue("@userDoc", currentUserDoc);
-            using var reader = cmd.ExecuteReader();
-
-             if (reader.Read())
-            {
-                return new MacthInfo
-                {
-                    MatchedUserDoc = reader.GetString("doc"),
-                    MatchedUserName = reader.GetString("name"),
-                    CreatedAt = reader.GetDateTime("createdAt"),
-                };
-            }
-
-
-            return null;
-        }
+    return matches;
+}
 
          public string GetDocByUsername(string username)
 {
