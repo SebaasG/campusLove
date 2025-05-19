@@ -66,26 +66,22 @@ namespace campusLove.domain.ports
             cmd.ExecuteNonQuery();
         }
 
-        public bool CheckIfMatchExists(string fromUser, string toUser)
-        {
-            var con = _conn.ObtenerConexion();
-            string query = @"SELECT 1 FROM Interaction WHERE fromUser = @from AND toUser = @to AND typeId = 1";
-            using var cmd = new MySqlCommand(query, con);
-            cmd.Parameters.AddWithValue("@from", fromUser);
-            cmd.Parameters.AddWithValue("@to", toUser);
-            using var reader = cmd.ExecuteReader();
-            return reader.Read();
-        }
+        // Ya no necesitas esto para crear matches, solo como utilidad opcional:
+            public bool CheckIfMatchExists(string fromUser, string toUser)
+            {
+                var con = _conn.ObtenerConexion();
+                string query = @"SELECT 1 FROM Matches 
+                                    WHERE (user1 = @from AND user2 = @to) 
+                                    OR (user1 = @to AND user2 = @from)";
+                using var cmd = new MySqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@from", fromUser);
+                cmd.Parameters.AddWithValue("@to", toUser);
+                using var reader = cmd.ExecuteReader();
+                return reader.Read();
+            }
 
-        public void CreateMatch(string user1, string user2)
-        {
-            var con = _conn.ObtenerConexion();
-            string query = @"INSERT INTO Matches (user1, user2) VALUES (@u1, @u2)";
-            using var cmd = new MySqlCommand(query, con);
-            cmd.Parameters.AddWithValue("@u1", user1);
-            cmd.Parameters.AddWithValue("@u2", user2);
-            cmd.ExecuteNonQuery();
-        }
+
+       
     
  public string GetDocByUsername(string username)
 {

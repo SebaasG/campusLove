@@ -11,13 +11,16 @@ namespace campusLove.application.ui
 {
     public class IndexP
     {
-            private readonly MessageUI _messagesUI;
-            private readonly ProfileUI _profileui;
+        private readonly MessageUI _messagesUI;
+        private readonly ProfileUI _profileui;
 
-        public IndexP(MessageUI messageUI, ProfileUI profileui)
+        private readonly MatchUI _MatchUI;
+
+        public IndexP(MessageUI messageUI, ProfileUI profileui, MatchUI matchUI)
         {
             _messagesUI = messageUI;
             _profileui = profileui;
+            _MatchUI = matchUI;
         }
         public void Show(string userName)
         {
@@ -45,7 +48,7 @@ namespace campusLove.application.ui
                         ProfileView(userName);
                         break;
                     case "2":
-                        // Call method to view matches
+                        MatchUI(userName);
                         break;
                     case "3":
                         _messagesUI.StartChat(userName);
@@ -70,8 +73,12 @@ namespace campusLove.application.ui
         }
         public void ProfileView(string userName)
         {
-            Console.WriteLine("HOla MUNDO");
             _profileui.ViewProfiles(userName);
+        }
+
+        public void MatchUI(string userName)
+        {
+            _MatchUI.ShowUserMatches(userName);
         }
     }
 }

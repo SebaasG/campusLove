@@ -34,10 +34,12 @@ namespace CslApp
             var loginService = new LoginService(factory.LoginUserRepository());
             var profileService = new ProfileService(factory.ProfileRepository());
             var messageService = new MessageService(factory.MessagesRepository());
-
+            var matchService = new MatchService(factory.matchesRepository());
 
             var profileUI = new ProfileUI(profileService);
-            var indexP = new IndexP(new MessageUI(messageService), profileUI );
+            var matchUI = new MatchUI(matchService);
+            
+            var indexP = new IndexP(new MessageUI(messageService), profileUI , matchUI);
 
             var uiMenu = new Menu(registerService, new LoginUI(loginService), indexP);
             uiMenu.ShowMenu();
