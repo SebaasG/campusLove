@@ -25,26 +25,27 @@ namespace campusLove.application.ui
                 Console.WriteLine("Error: No se encontró el documento del usuario.");
                 return;
             } 
-
-
-
-            while (true)
-            {
-
-
-                var profile = _matchService.GetNextProfile(currentUserDoc);
-
-                Console.WriteLine("\n🧡 Tus Matches:");
-            if (profile == null)
-            {
-                Console.WriteLine("Aún no tienes matches. ¡Sigue interactuando!");
-                return;
-            }
-
             
-                Console.WriteLine($"📌 Usuario: {profile.MatchedUserName} (Doc: {profile.MatchedUserDoc})");
-                Console.WriteLine($"    ➤ Fecha del Match: {profile.CreatedAt:yyyy-MM-dd HH:mm}");
-            }
+
+                while (true)
+{
+    var profile = _matchService.GetNextProfile(currentUserDoc);
+
+    Console.WriteLine("\n🧡 Tus Matches:");
+    if (profile == null)
+    {
+        Console.WriteLine("Aún no tienes matches. ¡Sigue interactuando!");
+        break;
+    }
+
+    Console.WriteLine($"📌 Usuario: {profile.MatchedUserName} (Doc: {profile.MatchedUserDoc})");
+    Console.WriteLine($"    ➤ Fecha del Match: {profile.CreatedAt:yyyy-MM-dd HH:mm}");
+
+    Console.WriteLine("\nPresiona [Enter] para ver otro match o escribe 'salir' para terminar.");
+    var input = Console.ReadLine();
+    if (input?.ToLower() == "salir")
+        break;
+}
         }
     }
 }
