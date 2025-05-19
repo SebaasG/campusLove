@@ -17,10 +17,10 @@ namespace campusLove.infrastructure.repositories
             _conn = coon;
         }
 
-       public List<MacthInfo> GetMatchesForUser(string currentUserDoc)
-{
-    var con = _conn.ObtenerConexion();
-    string query = @"
+        public List<MacthInfo> GetMatchesForUser(string currentUserDoc)
+        {
+            var con = _conn.ObtenerConexion();
+            string query = @"
         SELECT 
             u.doc, u.name, m.createdAt
         FROM Matches m
@@ -30,37 +30,39 @@ namespace campusLove.infrastructure.repositories
         WHERE 
             u.doc != @userDoc";
 
-    var matches = new List<MacthInfo>();
+            var matches = new List<MacthInfo>();
 
-    using var cmd = new MySqlCommand(query, con);
-    cmd.Parameters.AddWithValue("@userDoc", currentUserDoc);
-    using var reader = cmd.ExecuteReader();
+            using var cmd = new MySqlCommand(query, con);
+            cmd.Parameters.AddWithValue("@userDoc", currentUserDoc);
+            using var reader = cmd.ExecuteReader();
 
-    while (reader.Read())
-    {
-        matches.Add(new MacthInfo
+            while (reader.Read())
+            {
+                matches.Add(new MacthInfo
+                {
+                    MatchedUserDoc = reader.GetString("doc"),
+                    MatchedUserName = reader.GetString("name"),
+                    CreatedAt = reader.GetDateTime("createdAt"),
+                });
+            }
+
+            return matches;
+        }
+
+        public string GetDocByUsername(string username)
         {
-            MatchedUserDoc = reader.GetString("doc"),
-            MatchedUserName = reader.GetString("name"),
-            CreatedAt = reader.GetDateTime("createdAt"),
-        });
-    }
+            var connec = _conn.ObtenerConexion();
+            var query = "SELECT docUser FROM Credentials WHERE username = @username LIMIT 1";
 
-    return matches;
-}
+            using (var command = new MySqlCommand(query, connec))
+            {
+                command.Parameters.AddWithValue("@username", username);
+                var result = command.ExecuteScalar();
+                return result?.ToString();
+            }
+        }
 
-         public string GetDocByUsername(string username)
-{
-    var connec = _conn.ObtenerConexion();
-    var query = "SELECT docUser FROM Credentials WHERE username = @username LIMIT 1";
 
-    using (var command = new MySqlCommand(query, connec))
-    {
-        command.Parameters.AddWithValue("@username", username);
-        var result = command.ExecuteScalar();
-        return result?.ToString();
-    }
-}
 
     }
 }

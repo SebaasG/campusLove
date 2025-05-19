@@ -12,5 +12,8 @@ namespace campusLove.domain.ports
         void RegisterInteraction(string fromUser, string toUser, int typeId);
         bool CheckIfMatchExists(string fromUser, string toUser);
         string GetDocByUsername(string username);
+        int GetCreditsByDoc(string doc);
+
+        void UpdateCredits(string doc, int credits);
     }
 }

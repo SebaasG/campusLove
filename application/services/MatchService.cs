@@ -18,9 +18,10 @@ namespace campusLove.application.services
 
 
         public List<MacthInfo> GetUserMatches(string currentUserDoc)
-{
-    return _matchesRepository.GetMatchesForUser(currentUserDoc);
-}
+        {
+            return _matchesRepository.GetMatchesForUser(currentUserDoc);
+        }   
+    
 
         
         public string  FindDoc(String username)
