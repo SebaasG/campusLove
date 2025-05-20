@@ -28,7 +28,6 @@ public string login(string username, string password)
 
         using (var command = new MySqlCommand(query, connec))
             {
-                Console.WriteLine("Executing stored procedure...");
 
                 command.Parameters.AddWithValue("@_UserName", username);
 

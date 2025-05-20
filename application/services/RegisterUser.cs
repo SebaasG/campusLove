@@ -16,8 +16,26 @@ namespace campusLove.application.services
             _repo = repo;
         }
 
-        public void registerUser(DtoRegisterUser user){
+        public void registerUser(DtoRegisterUser user)
+        {
             _repo.register(user);
         }
+
+        public List<(int, string)> GetGenders()
+        {
+            return _repo.GetGenders();
+        }
+
+        public List<(int Id, string Name)> GetCities()
+        {
+            return _repo.GetCities();
+        }
+
+        public List<(int Id, string Name)> GetCareers()
+        {
+            return _repo.GetCareers();
+        }
+
+
     }
 }
