@@ -32,22 +32,25 @@ namespace campusLove.application.services
             _repository.RegisterInteraction(fromUser, toUser, 1);
             string email1 = getEmailByUsername(fromUser);
             string email2 = getEmailByUsername(toUser);
-            Console.WriteLine(email1+ "este es el 1");
-            Console.WriteLine(email2 + "este es el 2");
-            Console.WriteLine("esperando una tecla");
-            Console.ReadKey();
 
             bool email = ExistsMatchBetween(fromUser, toUser);
-            Console.WriteLine("este es el resultado",email);
-            Console.ReadKey();
             if (email == true)
             {
-                var subject = "Match Found!";
-                var body = $"Congratulations! You have a new match with {toUser}.";
+                var subject = " ¡CAMPUSLOVE MATCH ENCONTRADO! ";
+                var body = $@"
+                <html>
+                    <body style='font-family: Arial, sans-serif; background-color: #fef6f9; padding: 20px; color: #333;'>
+                        <div style='max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0px 0px 15px rgba(0,0,0,0.1);'>
+                            <h2 style='text-align: center; color: #e91e63;'>💘 ¡Felicitaciones!</h2>
+                            <p style='font-size: 16px;'>🎉 Has hecho match con <strong>{toUser}</strong>.</p>
+                            <p style='font-size: 16px;'>Ahora pueden empezar a conocerse mejor. ¡El amor está en el aire! 💌</p>
+                            <hr style='margin: 20px 0;' />
+                        </div>
+                    </body>
+                </html>";
+                
                 await _emailService.SendEmailAsync(email1, subject, body);
                 await _emailService.SendEmailAsync(email2, subject, body);
-                Console.WriteLine("enviando correos");
-                Console.ReadKey();
             }
         }
 
@@ -74,7 +77,7 @@ namespace campusLove.application.services
             return _matchesRepository.MatchExists(userDoc1, userDoc2);
 
         }
-        
+
         public string getEmailByUsername(string username)
         {
             return _matchesRepository.getEmailByUsername(username);

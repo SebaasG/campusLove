@@ -35,7 +35,8 @@ namespace CslApp
                 Port = int.Parse(smtpSection["Port"]),
                 Username = smtpSection["Username"],
                 Password = smtpSection["Password"],
-                FromName = smtpSection["FromName"]
+                FromName = smtpSection["FromName"],
+                
             };
 
             var emailServiceRepository = new campusLove.infrastructure.repositories.EmailServiceRepository();
