@@ -1,4 +1,5 @@
 ﻿using campusLove.application.services;
+using campusLove.application.servicesa;
 using campusLove.application.ui;
 using Microsoft.Extensions.Configuration;
 using sgi_app.domain.factory;
@@ -34,19 +35,23 @@ namespace CslApp
                 Port = int.Parse(smtpSection["Port"]),
                 Username = smtpSection["Username"],
                 Password = smtpSection["Password"],
-                FromName = smtpSection["FromName"]
+                FromName = smtpSection["FromName"],
+                
             };
 
-            var emailSender = new campusLove.infrastructure.helpers.EmailSend(smtpSettings);
+            var emailServiceRepository = new campusLove.infrastructure.repositories.EmailServiceRepository();
+
 
          
             IDbFactory factory = new mysqlDbFactory(connectionString);
 
             var registerService = new RegisterUser(factory.ResgisterUserRepository());
             var loginService = new LoginService(factory.LoginUserRepository());
-            var profileService = new ProfileService(factory.ProfileRepository());
+            
+            var profileService = new ProfileService(factory.ProfileRepository(), factory.matchesRepository(),emailServiceRepository);
             var messageService = new MessageService(factory.MessagesRepository());
             var matchService = new MatchService(factory.matchesRepository());
+            
 
             var profileUI = new ProfileUI(profileService);
             var matchUI = new MatchUI(matchService);

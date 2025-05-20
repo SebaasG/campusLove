@@ -114,7 +114,7 @@ namespace campusLove.domain.ports
                 return Convert.ToInt32(result);
             }
         }
-        
+
         public void UpdateCredits(string doc, int newCredits)
         {
             var connec = _conn.ObtenerConexion();
@@ -126,6 +126,23 @@ namespace campusLove.domain.ports
                 command.Parameters.AddWithValue("@doc", doc);
                 command.ExecuteNonQuery();
             }
+        }
+        
+         public bool MatchExists(string user1, string user2)
+        {
+            var con = _conn.ObtenerConexion();
+            string query = @"
+        SELECT COUNT(*) FROM Matches 
+        WHERE (user1 = @user1 AND user2 = @user2) 
+           OR (user1 = @user2 AND user2 = @user1)";
+
+            using var cmd = new MySqlCommand(query, con);
+            cmd.Parameters.AddWithValue("@user1", user1);
+            cmd.Parameters.AddWithValue("@user2", user2);
+
+            var result = Convert.ToInt32(cmd.ExecuteScalar());
+            Console.WriteLine($"Result: {result} holaaa");
+            return result > 0;
         }
 
     }

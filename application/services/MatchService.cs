@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using campusLove.domain.entities;
 using campusLove.domain.ports;
 
-namespace campusLove.application.services
+namespace campusLove.application.servicesa
 {
     public class MatchService
     {
@@ -20,13 +20,14 @@ namespace campusLove.application.services
         public List<MacthInfo> GetUserMatches(string currentUserDoc)
         {
             return _matchesRepository.GetMatchesForUser(currentUserDoc);
-        }   
-    
+        }
 
-        
-        public string  FindDoc(String username)
+       
+
+
+        public string FindDoc(String username)
         {
-            return  _matchesRepository.GetDocByUsername(username);
+            return _matchesRepository.GetDocByUsername(username);
         }
 
     }
