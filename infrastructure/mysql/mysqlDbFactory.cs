@@ -30,6 +30,11 @@ namespace sgi_app.infrastructure.mysql
             return new LoginRepository(ConexionSingleton.Instancia(_connectionString));
         }
 
+        public IDtoEditRepository editRepository()
+        {
+            return new DtoEditRepository(ConexionSingleton.Instancia(_connectionString));
+        }
+
 
         public MySqlConnection ObtenerConexion()
         {

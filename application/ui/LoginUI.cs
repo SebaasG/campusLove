@@ -28,7 +28,6 @@ namespace campusLove.application.ui
             credentials.password = PedirEntrada("Enter your Password: ");
     
             var result = _service.login(credentials.username, credentials.password);
-            Console.WriteLine("Este es el resultado: " + result);
             return result;
 
         }
