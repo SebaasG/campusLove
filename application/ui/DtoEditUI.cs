@@ -1,5 +1,6 @@
 using System;
 using campusLove.application.services;
+using Spectre.Console;
 
 namespace campusLove.application.ui
 {
@@ -19,55 +20,63 @@ namespace campusLove.application.ui
             while (running)
             {
                 Console.Clear();
-                Console.WriteLine("=== EDITAR PERFIL DE USUARIO ===");
-                Console.WriteLine($"Usuario: {userDoc}");
-                Console.WriteLine("-------------------------------");
-                Console.WriteLine("1. Editar Género");
-                Console.WriteLine("2. Editar Ciudad");
-                Console.WriteLine("3. Editar Carrera");
-                Console.WriteLine("4. Editar Frase");
-                Console.WriteLine("5. Editar Email");
-                Console.WriteLine("6. Activar/Desactivar Usuario");
-                Console.WriteLine("0. Volver");
-                Console.WriteLine("-------------------------------");
-                Console.Write("Seleccione una opción: ");
 
-                string option = Console.ReadLine();
+                AnsiConsole.Write(
+                    new Panel($"[bold yellow]Editar Perfil de Usuario[/]\n[grey]Usuario: {userDoc}[/]")
+                        .Border(BoxBorder.Rounded)
+                        .Header("[green]Menú de Edición[/]")
+                        .Expand()
+                        .Padding(1, 1));
+
+                var option = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                        .Title("Seleccione una opción:")
+                        .PageSize(10)
+                        .AddChoices(new[]
+                        {
+                            "1. Editar Género",
+                            "2. Editar Ciudad",
+                            "3. Editar Carrera",
+                            "4. Editar Frase",
+                            "5. Editar Email",
+                            "6. Activar/Desactivar Usuario",
+                            "0. Volver"
+                        }));
 
                 try
                 {
-                    switch (option)
+                    switch (option[0])
                     {
-                        case "1":
+                        case '1':
                             EditGender(userDoc);
                             break;
-                        case "2":
+                        case '2':
                             EditCity(userDoc);
                             break;
-                        case "3":
+                        case '3':
                             EditCareer(userDoc);
                             break;
-                        case "4":
+                        case '4':
                             EditPhrase(userDoc);
                             break;
-                        case "5":
+                        case '5':
                             EditEmail(userDoc);
                             break;
-                        case "6":
+                        case '6':
                             EditActive(userDoc);
                             break;
-                        case "0":
+                        case '0':
                             running = false;
                             break;
                         default:
-                            Console.WriteLine("❌ Opción no válida.");
+                            AnsiConsole.MarkupLine("[red]❌ Opción no válida.[/]");
                             Pause();
                             break;
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"\n❌ Ocurrió un error: {ex.Message}");
+                    AnsiConsole.MarkupLine($"\n[red]❌ Ocurrió un error: {ex.Message}[/]");
                     Pause();
                 }
             }
@@ -75,89 +84,92 @@ namespace campusLove.application.ui
 
         private void EditGender(string userDoc)
         {
-            Console.Write("Ingrese nuevo ID de género: ");
-            if (int.TryParse(Console.ReadLine(), out int gender))
+            int? gender = PromptForInt("Ingrese nuevo ID de género:");
+
+            if (gender.HasValue)
             {
-                _editService.EditGender(userDoc, gender);
-                Console.WriteLine("✅ Género actualizado con éxito.");
+                _editService.EditGender(userDoc, gender.Value);
+                AnsiConsole.MarkupLine("[green]✅ Género actualizado con éxito.[/]");
             }
             else
             {
-                Console.WriteLine("❌ Entrada inválida. Debe ser un número.");
+                AnsiConsole.MarkupLine("[red]❌ Entrada inválida. Debe ser un número.[/]");
             }
             Pause();
         }
 
         private void EditCity(string userDoc)
         {
-            Console.Write("Ingrese nuevo ID de ciudad: ");
-            if (int.TryParse(Console.ReadLine(), out int city))
+            int? city = PromptForInt("Ingrese nuevo ID de ciudad:");
+
+            if (city.HasValue)
             {
-                _editService.EditCity(userDoc, city);
-                Console.WriteLine("✅ Ciudad actualizada con éxito.");
+                _editService.EditCity(userDoc, city.Value);
+                AnsiConsole.MarkupLine("[green]✅ Ciudad actualizada con éxito.[/]");
             }
             else
             {
-                Console.WriteLine("❌ Entrada inválida. Debe ser un número.");
+                AnsiConsole.MarkupLine("[red]❌ Entrada inválida. Debe ser un número.[/]");
             }
             Pause();
         }
 
         private void EditCareer(string userDoc)
         {
-            Console.Write("Ingrese nuevo ID de carrera: ");
-            if (int.TryParse(Console.ReadLine(), out int career))
+            int? career = PromptForInt("Ingrese nuevo ID de carrera:");
+
+            if (career.HasValue)
             {
-                _editService.EditCareer(userDoc, career);
-                Console.WriteLine("✅ Carrera actualizada con éxito.");
+                _editService.EditCareer(userDoc, career.Value);
+                AnsiConsole.MarkupLine("[green]✅ Carrera actualizada con éxito.[/]");
             }
             else
             {
-                Console.WriteLine("❌ Entrada inválida. Debe ser un número.");
+                AnsiConsole.MarkupLine("[red]❌ Entrada inválida. Debe ser un número.[/]");
             }
             Pause();
         }
 
         private void EditPhrase(string userDoc)
         {
-            Console.Write("Ingrese nueva frase: ");
-            string phrase = Console.ReadLine();
+            var phrase = AnsiConsole.Ask<string>("Ingrese nueva frase:");
             _editService.EditPhrase(userDoc, phrase);
-            Console.WriteLine("✅ Frase actualizada con éxito.");
+            AnsiConsole.MarkupLine("[green]✅ Frase actualizada con éxito.[/]");
             Pause();
         }
 
         private void EditEmail(string userDoc)
         {
-            Console.Write("Ingrese nuevo email: ");
-            string email = Console.ReadLine();
+            var email = AnsiConsole.Ask<string>("Ingrese nuevo email:");
             _editService.EditEmail(userDoc, email);
-            Console.WriteLine("✅ Email actualizado con éxito.");
+            AnsiConsole.MarkupLine("[green]✅ Email actualizado con éxito.[/]");
             Pause();
         }
 
         private void EditActive(string userDoc)
         {
-            Console.Write("¿Activar usuario? (s/n): ");
-            string input = Console.ReadLine().Trim().ToLower();
+            var isActive = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("¿Activar usuario?")
+                    .AddChoices(new[] { "Sí", "No" }));
 
-            if (input == "s" || input == "n")
-            {
-                bool isActive = input == "s";
-                _editService.EditActive(userDoc, isActive);
-                Console.WriteLine("✅ Estado actualizado con éxito.");
-            }
-            else
-            {
-                Console.WriteLine("❌ Entrada inválida. Debe ingresar 's' o 'n'.");
-            }
+            _editService.EditActive(userDoc, isActive == "Sí");
+            AnsiConsole.MarkupLine("[green]✅ Estado actualizado con éxito.[/]");
             Pause();
+        }
+
+        private int? PromptForInt(string message)
+        {
+            var input = AnsiConsole.Ask<string>(message);
+            if (int.TryParse(input, out int value))
+                return value;
+            return null;
         }
 
         private void Pause()
         {
-            Console.WriteLine("\nPresione cualquier tecla para continuar...");
-            Console.ReadKey();
+            AnsiConsole.MarkupLine("\n[grey]Presione cualquier tecla para continuar...[/]");
+            Console.ReadKey(true);
         }
     }
 }
