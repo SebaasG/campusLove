@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using campusLove.application.services;
 using campusLove.application.servicesa;
+using Spectre.Console;
 
 namespace campusLove.application.ui
 {
@@ -18,20 +17,31 @@ namespace campusLove.application.ui
 
         public void ShowUserMatches(string userDoc)
         {
+            Console.Clear();
+
             string currentUserDoc = _matchService.FindDoc(userDoc);
 
             if (string.IsNullOrEmpty(currentUserDoc))
             {
-                Console.WriteLine("Error: No se encontró el documento del usuario.");
+                AnsiConsole.MarkupLine("[red]Error: No se encontró el documento del usuario.[/]");
+                AnsiConsole.MarkupLine("[grey]Presiona cualquier tecla para continuar...[/]");
+                Console.ReadKey(true);
                 return;
             }
 
             var profiles = _matchService.GetUserMatches(currentUserDoc);
 
-            Console.WriteLine("\n🧡 Tus Matches:");
+            AnsiConsole.Write(
+                new Panel("[bold orange1]🧡 Tus Matches[/]")
+                    .Border(BoxBorder.Rounded)
+                    .Expand()
+                    .Padding(1, 1));
+
             if (profiles == null || profiles.Count == 0)
             {
-                Console.WriteLine("Aún no tienes matches. ¡Sigue interactuando!");
+                AnsiConsole.MarkupLine("[yellow]Aún no tienes matches. ¡Sigue interactuando![/]");
+                AnsiConsole.MarkupLine("[grey]Presiona cualquier tecla para continuar...[/]");
+                Console.ReadKey(true);
                 return;
             }
 
@@ -39,20 +49,34 @@ namespace campusLove.application.ui
             while (index < profiles.Count)
             {
                 var profile = profiles[index];
-                Console.WriteLine($"📌 Usuario: {profile.MatchedUserName} (Doc: {profile.MatchedUserDoc})");
-                Console.WriteLine($"    ➤ Fecha del Match: {profile.CreatedAt:yyyy-MM-dd HH:mm}");
 
-                Console.WriteLine("\nPresiona [Enter] para ver otro match o escribe 'salir' para terminar.");
-                var input = Console.ReadLine();
-                if (input?.ToLower() == "salir")
+                var profilePanel = new Panel(
+                    $"[bold blue]Usuario:[/] {profile.MatchedUserName}  \n" +
+                    $"[bold blue]Documento:[/] {profile.MatchedUserDoc}  \n" +
+                    $"[bold blue]Fecha del Match:[/] {profile.CreatedAt:yyyy-MM-dd HH:mm}")
+                    .Border(BoxBorder.Double)
+                    .Padding(1, 1)
+                    .Expand();
+
+                AnsiConsole.Write(profilePanel);
+
+                var input = AnsiConsole.Prompt(
+    new TextPrompt<string>("[grey]Presiona [[Enter]] para ver otro match o escribe 'salir' para terminar:[/]")
+        .AllowEmpty());
+
+                if (!string.IsNullOrEmpty(input) && input.Trim().ToLower() == "salir")
                     break;
 
                 index++;
+                Console.Clear();
+
+                // Re-print the header panel after clear
+                AnsiConsole.Write(
+                    new Panel("[bold orange1]🧡 Tus Matches[/]")
+                        .Border(BoxBorder.Rounded)
+                        .Expand()
+                        .Padding(1, 1));
             }
         }
-
-
-
-
     }
 }
