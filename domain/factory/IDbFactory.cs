@@ -20,5 +20,7 @@ namespace sgi_app.domain.factory
 
         IDtoEditRepository editRepository();
 
+        IStatsRepository StatsRepository();
+
     }
 }

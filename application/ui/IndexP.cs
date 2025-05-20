@@ -18,12 +18,15 @@ namespace campusLove.application.ui
 
         private readonly DtoEditUI _Edit;
 
-        public IndexP(MessageUI messageUI, ProfileUI profileui, MatchUI matchUI, DtoEditUI edit)
+        private readonly StatsUI _Stats;
+
+        public IndexP(MessageUI messageUI, ProfileUI profileui, MatchUI matchUI, DtoEditUI edit, StatsUI stats)
         {
             _messagesUI = messageUI;
             _profileui = profileui;
             _MatchUI = matchUI;
             _Edit = edit;
+            _Stats = stats;
         }
        public void Show(string userName)
 {
@@ -67,7 +70,9 @@ namespace campusLove.application.ui
                 _Edit.Show(userName);
                 break;
             case "5":
-                // Aquí puedes llamar a la función de Stats cuando la implementes
+                _Stats.ShowAllStats();
+                Console.WriteLine("Presiona una tecla para volver...");
+                Console.ReadKey();
                 break;
             case "6":
                 Console.WriteLine("Cerrando sesión...");

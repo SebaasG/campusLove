@@ -75,7 +75,6 @@ namespace campusLove.infrastructure.repositories
             cmd.Parameters.AddWithValue("@user2", user2);
 
             var result = Convert.ToInt32(cmd.ExecuteScalar());
-            Console.WriteLine($"Result: {result} holaaa");
             return result > 0;
         }
         public string getEmailByUsername(string docUser)

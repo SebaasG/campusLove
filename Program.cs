@@ -52,12 +52,14 @@ namespace CslApp
             var messageService = new MessageService(factory.MessagesRepository());
             var matchService = new MatchService(factory.matchesRepository());
             var editService = new DtoEditService(factory.editRepository());
+            var StatService = new StatsService(factory.StatsRepository());
             
 
             var profileUI = new ProfileUI(profileService);
             var matchUI = new MatchUI(matchService);
             var EditUi = new DtoEditUI(editService);
-            var indexP = new IndexP(new MessageUI(messageService), profileUI, matchUI, EditUi);
+            var StatsUI = new StatsUI(StatService);
+            var indexP = new IndexP(new MessageUI(messageService), profileUI, matchUI, EditUi,StatsUI );
 
             var uiMenu = new Menu(registerService, new LoginUI(loginService), indexP);
             uiMenu.ShowMenu();

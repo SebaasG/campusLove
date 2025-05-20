@@ -35,6 +35,12 @@ namespace sgi_app.infrastructure.mysql
             return new DtoEditRepository(ConexionSingleton.Instancia(_connectionString));
         }
 
+         public IStatsRepository StatsRepository()
+        {
+            return new StatsRepository(ConexionSingleton.Instancia(_connectionString));
+        }
+
+
 
         public MySqlConnection ObtenerConexion()
         {
