@@ -17,14 +17,14 @@ namespace campusLove.application.ui
 
         public void ViewProfiles(string currentUsername)
         {
-            
-             String currentUserDoc = _service.FindDoc(currentUsername);
+
+            String currentUserDoc = _service.FindDoc(currentUsername);
 
             if (string.IsNullOrEmpty(currentUserDoc))
             {
                 Console.WriteLine("Error: No se encontró el documento del usuario.");
                 return;
-            } 
+            }
 
             while (true)
             {
@@ -37,7 +37,7 @@ namespace campusLove.application.ui
                     Console.WriteLine("No more profiles to view.");
                     break;
                 }
-                 var credits = _service.GetCredits(currentUserDoc);
+                var credits = _service.GetCredits(currentUserDoc);
 
                 Console.Clear();
                 Console.WriteLine("username: " + currentUserDoc);
@@ -52,9 +52,9 @@ namespace campusLove.application.ui
                 Console.WriteLine("3. Exit");
 
                 var option = Console.ReadLine();
-                
-                 
-    
+
+
+
                 if (credits <= 0)
                 {
                     Console.WriteLine("No tienes créditos suficientes para interactuar.");
@@ -64,7 +64,10 @@ namespace campusLove.application.ui
                 {
                     if (option == "1")
                     {
+                        Console.WriteLine("Esta enrnado aqui");
                         _service.LikeProfile(currentUserDoc, profile.doc);
+                        Console.WriteLine("Like registrado.");
+                        Console.ReadKey();
                         _service.UpdateCredits(currentUserDoc, credits - 1);
                     }
                     else if (option == "2")
@@ -77,10 +80,34 @@ namespace campusLove.application.ui
                         break;
                     }
                 }
-
+            }
+        }
     
+
+public void VerificarMatchEntre(string username1, string username2)
+        {
+            Console.WriteLine($"Verificando si hay match entre {username1} y {username2}...");
+
+
+            if (string.IsNullOrEmpty(username1) || string.IsNullOrEmpty(username2))
+            {
+                Console.WriteLine("Uno o ambos usuarios no existen.");
+                return;
             }
 
+            bool existeMatch = _service.ExistsMatchBetween(username1, username2);
+
+            if (existeMatch)
+            {
+                Console.WriteLine($"✅ Ya existe un match entre {username1} y {username2}.");
+            }
+            else
+            {
+                Console.WriteLine($"❌ Aún no hay match entre {username1} y {username2}.");
+            }
         }
-    }
-}
+            }
+
+
+        }
+    

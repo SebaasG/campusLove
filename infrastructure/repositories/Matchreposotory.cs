@@ -62,6 +62,38 @@ namespace campusLove.infrastructure.repositories
             }
         }
 
+        public bool MatchExists(string user1, string user2)
+        {
+            var con = _conn.ObtenerConexion();
+            string query = @"
+        SELECT COUNT(*) FROM Matches 
+        WHERE (user1 = @user1 AND user2 = @user2) 
+           OR (user1 = @user2 AND user2 = @user1)";
+
+            using var cmd = new MySqlCommand(query, con);
+            cmd.Parameters.AddWithValue("@user1", user1);
+            cmd.Parameters.AddWithValue("@user2", user2);
+
+            var result = Convert.ToInt32(cmd.ExecuteScalar());
+            Console.WriteLine($"Result: {result} holaaa");
+            return result > 0;
+        }
+        public string getEmailByUsername(string docUser)
+        {
+            var connec = _conn.ObtenerConexion();
+            var query = @"SELECT p.email 
+                        FROM Credentials c
+                        JOIN Profiles p ON p.userId = c.docUser
+                        WHERE c.docUser = @doc
+                        LIMIT 1";
+
+            using (var command = new MySqlCommand(query, connec))
+            {
+                command.Parameters.AddWithValue("@doc", docUser);
+                var result = command.ExecuteScalar();
+                return result?.ToString();
+            }
+        }
 
 
     }

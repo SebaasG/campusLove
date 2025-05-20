@@ -49,6 +49,8 @@ namespace campusLove.application.ui
                         break;
                     case "2":
                         MatchUI(userName);
+                        Console.WriteLine("Presiona una tecla para volver...");
+                        Console.ReadKey();
                         break;
                     case "3":
                         _messagesUI.StartChat(userName);

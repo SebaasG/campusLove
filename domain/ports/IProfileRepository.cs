@@ -15,5 +15,7 @@ namespace campusLove.domain.ports
         int GetCreditsByDoc(string doc);
 
         void UpdateCredits(string doc, int credits);
+
+        
     }
 }

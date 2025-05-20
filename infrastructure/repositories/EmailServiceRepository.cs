@@ -9,7 +9,7 @@ using MailKit.Net.Smtp;
 
 namespace campusLove.infrastructure.repositories
 {
-    public class EmailService: IEmailRepository
+    public class EmailServiceRepository: IEmailRepository
     {
         private readonly string _smtpServer = "smtp.gmail.com";
         private readonly int _smtpPort = 587;
