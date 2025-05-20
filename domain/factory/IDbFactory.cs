@@ -15,8 +15,10 @@ namespace sgi_app.domain.factory
         IMessagesRepository MessagesRepository();
 
         IProfileRepository ProfileRepository();
-        
+
         IMatchesRepository matchesRepository();
+
+        IDtoEditRepository editRepository();
 
     }
 }
