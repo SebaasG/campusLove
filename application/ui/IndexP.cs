@@ -16,64 +16,78 @@ namespace campusLove.application.ui
 
         private readonly MatchUI _MatchUI;
 
-        public IndexP(MessageUI messageUI, ProfileUI profileui, MatchUI matchUI)
+        private readonly DtoEditUI _Edit;
+
+        public IndexP(MessageUI messageUI, ProfileUI profileui, MatchUI matchUI, DtoEditUI edit)
         {
             _messagesUI = messageUI;
             _profileui = profileui;
             _MatchUI = matchUI;
+            _Edit = edit;
         }
-        public void Show(string userName)
+       public void Show(string userName)
+{
+    bool running = true;
+
+    while (running)
+    {
+        Console.Clear();
+        Console.WriteLine("userName: " + userName);
+        Console.WriteLine("===================================");
+        Console.WriteLine("           Campus Love             ");
+        Console.WriteLine("===================================");
+        Console.WriteLine("1. View Profiles");
+        Console.WriteLine("2. Matches");
+        Console.WriteLine("3. Messages");
+        Console.WriteLine("4. Your Profile");
+        Console.WriteLine("5. Stats");
+        Console.WriteLine("6. Logout");
+        Console.WriteLine("7. Exit");
+        Console.WriteLine("===================================");
+        Console.Write("Selecciona una opción: ");
+
+        var option = Console.ReadLine();
+
+        switch (option)
         {
-            while (true)
-            {
-                Console.Clear();
-                Console.WriteLine("userName: " + userName);
-                Console.WriteLine("===================================");
-                Console.WriteLine("           Campus Love             ");
-                Console.WriteLine("===================================");
-                Console.WriteLine("1. View Profiles");
-                Console.WriteLine("2. Matches");
-                Console.WriteLine("3. Messages");
-                Console.WriteLine("4. Your Profile");
-                Console.WriteLine("5. Stats");
-                Console.WriteLine("6. Exit");
-                Console.WriteLine("===================================");
-                Console.Write("Selecciona una opción: ");
-
-                var option = Console.ReadLine();
-
-                switch (option)
-                {
-                    case "1":
-                        ProfileView(userName);
-                        break;
-                    case "2":
-                        MatchUI(userName);
-                        Console.WriteLine("Presiona una tecla para volver...");
-                        Console.ReadKey();
-                        break;
-                    case "3":
-                        _messagesUI.StartChat(userName);
-                        Console.WriteLine("Presiona una tecla para volver...");
-                        Console.ReadKey();
-                        break;
-                    case "4":
-                        
-                        break;
-                    case "5":
-                        // Call method to view settings
-                        break;
-                    case "6":
-                        Console.WriteLine("Saliendo...");
-                        Environment.Exit(0);
-                        return;
-                    default:
-                        Console.WriteLine("Invalid option. Please try again.");
-                        break;
-                }
-
-            }
+            case "1":
+                ProfileView(userName);
+                break;
+            case "2":
+                MatchUI(userName);
+                Console.WriteLine("Presiona una tecla para volver...");
+                Console.ReadKey();
+                break;
+            case "3":
+                _messagesUI.StartChat(userName);
+                Console.WriteLine("Presiona una tecla para volver...");
+                Console.ReadKey();
+                break;
+            case "4":
+                _Edit.Show(userName);
+                break;
+            case "5":
+                // Aquí puedes llamar a la función de Stats cuando la implementes
+                break;
+            case "6":
+                Console.WriteLine("Cerrando sesión...");
+                Console.WriteLine("Presione una tecla para continuar...");
+                Console.ReadKey();
+                running = false; 
+                break;
+            case "7":
+                Console.WriteLine("Saliendo...");
+                Environment.Exit(0); 
+                return;
+            default:
+                Console.WriteLine("Opción inválida. Intente de nuevo.");
+                Console.WriteLine("Presione una tecla para continuar...");
+                Console.ReadKey();
+                break;
         }
+    }
+}
+
         public void ProfileView(string userName)
         {
             _profileui.ViewProfiles(userName);
